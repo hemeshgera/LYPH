@@ -1,0 +1,4 @@
+#Tue Jul 06 20:18:57 IST 2021
+base.0=G\:\\LYPH\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
