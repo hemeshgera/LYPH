@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter_poject/Screens/goalBasedResults.dart';
 
 class goal_based extends StatefulWidget {
   const goal_based({Key? key}) : super(key: key);
@@ -9,11 +13,10 @@ class goal_based extends StatefulWidget {
 
 class _goal_basedState extends State<goal_based> {
   String dropdownValue = 'Education';
-  final _goal = TextEditingController();
-  final _amount = TextEditingController();
   final _tenure = TextEditingController();
+  final _amount = TextEditingController();
   final _maxMonthlyInvestment = TextEditingController();
-
+  String _goal = '';
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +64,7 @@ class _goal_basedState extends State<goal_based> {
                   onChanged: (String? newValue) {
                     setState(() {
                       dropdownValue = newValue!;
+                      _goal = dropdownValue;
                     });
                   },
                   items: <String>['Education', 'Travel', 'House Purchase', 'New Gadget']
@@ -87,7 +91,7 @@ class _goal_basedState extends State<goal_based> {
                 ])
               //color: Colors.red,
             ),
-            TextFormField(controller: _maxMonthlyInvestment,
+            TextFormField(controller: _tenure,
               onChanged: (value) {
                 //Do something with the user input.
               },
@@ -111,9 +115,6 @@ class _goal_basedState extends State<goal_based> {
                   borderRadius: BorderRadius.all(Radius.circular(32.0)),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 24.0,
             ),
             Container(
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
@@ -185,23 +186,25 @@ class _goal_basedState extends State<goal_based> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 24.0,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement login functionality.
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Enter',
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Material(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  elevation: 5.0,
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => goalBasedResults(_tenure.text, _amount.text, _maxMonthlyInvestment.text)),
+                      );
+                    },
+                    minWidth: 200.0,
+                    height: 42.0,
+                    child: Text(
+                      'Enter',
+                    ),
                   ),
                 ),
               ),
@@ -212,3 +215,7 @@ class _goal_basedState extends State<goal_based> {
     );
   }
 }
+
+
+
+
