@@ -26,6 +26,7 @@ def goalBasedPage(volThreshold, tenure, amount, maxInvestment):
     names = np.array(weights[0].index)
     
     indexDict = {'Overall': {'Total Monthly Amount': weights[0].sum()['InvestmentAmount']}}
+    indexDict['Breakdown'] = {}
     for name in names:
         dictData = {
                         'Name': name,
@@ -34,7 +35,7 @@ def goalBasedPage(volThreshold, tenure, amount, maxInvestment):
                         'Historical Returns': df[df['Name'] == name]['CAGR'].values[0],
 
                    }
-        indexDict[name] = dictData
+        indexDict['Breakdown'][name] = dictData
     return jsonify(indexDict), 200
 
 
