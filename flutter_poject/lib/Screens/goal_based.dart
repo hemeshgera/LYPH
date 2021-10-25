@@ -195,10 +195,7 @@ class _goal_basedState extends State<goal_based> {
                   elevation: 5.0,
                   child: MaterialButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => goalBasedResults(_tenure.text, _amount.text, _maxMonthlyInvestment.text)),
-                      );
+                      var goalData = getFinalData(_tenure.text, _amount.text, _maxMonthlyInvestment.text);
                     },
                     minWidth: 200.0,
                     height: 42.0,
@@ -214,8 +211,33 @@ class _goal_basedState extends State<goal_based> {
       ),
     );
   }
+  void getFinalData(tenure,amount, monthlyInvestment) async {
+    var goalData = await fetchData(tenure, amount, monthlyInvestment);
+
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return goalBasedResults(
+        finalData: jsonDecode(goalData),
+      );
+    }));
+  }
 }
 
 
 
+
+Future fetchData(tenure,amount, monthlyInvestment) async {
+  print('http://10.0.2.2:5000/goalBasedPage/0.1/'+'$tenure'+'/'+'$amount'+'/'+ '$monthlyInvestment');
+  http.Response response = await http.get(Uri.parse('http://10.0.2.2:5000/goalBasedPage/0.1/'+'$tenure'+'/'+'$amount'+'/'+ '$monthlyInvestment'));
+  var data;
+  if (response.statusCode == 200){
+    data = await response.body;
+    var breakdown = jsonDecode(data)["Breakdown"];
+    var keys = breakdown.keys.toList();
+
+  }
+
+ return await data;
+
+}
 

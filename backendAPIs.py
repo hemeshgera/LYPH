@@ -39,6 +39,17 @@ def goalBasedPage(volThreshold, tenure, amount, maxInvestment):
     return jsonify(indexDict), 200
 
 
+@app.route('/emergencyFund/', methods = ['GET'])
+def emergencyFund():
+    
+    resultDict = {
+                    'HDFC Overnight Fund': {'CAGR': 0.045, 'Amount': 25000, 'ER': 0.0002}, 
+                    'ICICI money Market Fund':{'CAGR': 0.071, 'Amount': 25000, 'ER': 0.001}, 
+                    'Aditya Birla Debt Fund':{'CAGR': 0.063, 'Amount': 25000, 'ER': 0.0008}
+                  }
+    return jsonify(resultDict), 200
+
+
 
 
 

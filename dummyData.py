@@ -179,22 +179,22 @@ class goalBased():
         cagr = np.array(shortlistedDf['CAGR'])
         
         
-        timeseries = self.returnsOfInstrument(securitiesCode[0])
-        timeseries.index = timeseries['date'].values
-        df = pd.DataFrame(columns = securitiesCode, index = timeseries[timeseries['date']>=startDate].index)
-        for code in securitiesCode:
-            timeseries = self.returnsOfInstrument(code)
-            timeseries.index = timeseries['date']
-            returns = timeseries[timeseries['date']>=startDate]['Returns']
-            for i in returns.index:
-                df.loc[i,code] = float(returns.loc[i,])
+        # timeseries = self.returnsOfInstrument(securitiesCode[0])
+        # timeseries.index = timeseries['date'].values
+        # df = pd.DataFrame(columns = securitiesCode, index = timeseries[timeseries['date']>=startDate].index)
+        # for code in securitiesCode:
+        #     timeseries = self.returnsOfInstrument(code)
+        #     timeseries.index = timeseries['date']
+        #     returns = timeseries[timeseries['date']>=startDate]['Returns']
+        #     for i in returns.index:
+        #         df.loc[i,code] = float(returns.loc[i,])
 
-        df  = df.dropna()  
-        cov = df.astype(float).cov()
-        expectedCagr = np.array([((1+x)**(1/252) - 1)  for x in cagr])
-        meanReturnsLast2Years = np.array(df.mean())
-        expectedReturns = (expectedCagr*1.0+meanReturnsLast2Years*0.0)
-        weights = self.optimalWeights(cov, expectedReturns, self.volThreshold)
+        # df  = df.dropna()  
+        # cov = df.astype(float).cov()
+        # expectedCagr = np.array([((1+x)**(1/252) - 1)  for x in cagr])
+        # meanReturnsLast2Years = np.array(df.mean())
+        expectedReturns = np.array([random.randint(10,20)/36500 for i in securitiesName])#(expectedCagr*1.0+meanReturnsLast2Years*0.0)
+        weights = np.array([1/len(securitiesName) for i in securitiesName])#self.optimalWeights(cov, expectedReturns, self.volThreshold)
         expectedPortflioReturns = expectedReturns.dot(weights)
         monthlyInvestmentNeeded  = npf.pmt(expectedPortflioReturns*22, self.tenure*12, 0, self.amountNeeded, 'end')
         
@@ -205,7 +205,7 @@ class goalBased():
         for num, name in enumerate(securitiesName):
             allocationDf.loc[name, 'InvestmentAmount'] = -1*weights[num]* monthlyInvestmentNeeded      
         
-        portfolioRisk = math.sqrt(weights.dot(cov.dot(weights.T))*252)
+        portfolioRisk = .12#math.sqrt(weights.dot(cov.dot(weights.T))*252)
         return [allocationDf[abs(allocationDf['Weights'])>1e-5].drop(['Weights'],axis=1), portfolioRisk]
         
             
